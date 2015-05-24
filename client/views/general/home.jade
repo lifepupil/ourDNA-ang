@@ -1,1 +1,13 @@
 h3 HOME
+
+.row.col-xs-12
+  .col-xs-4
+    .form-group
+      label(for='namebox') Name
+      input.form-control#nameHome(type='text', name='namebox', ng-model='profile.name')
+    .form-group
+      label(for='dnabox') 23andme data file
+      //- input.form-control#dnaHome(type='file', name='dnabox', ng-change='getDNAfile(f)')
+      input.form-control#dnaHome(type='file', name='dnabox', onchange='angular.element(this).scope().getDNAfile(this)')
+    .form-group
+      button.btn.btn-success(ng-click='createProfile(profile)') Create Profile

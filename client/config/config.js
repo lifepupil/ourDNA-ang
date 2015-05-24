@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('poseidon')
+angular.module('ourDna')
 .config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-  .state('home', {url: '/', templateUrl: '/views/general/home.html'})
+  .state('home', {url: '/', templateUrl: '/views/general/home.html', controller: 'homeCtrl'})
   .state('about', {url: '/about', templateUrl: '/views/general/about.html'})
   .state('faq', {url: '/faq', templateUrl: '/views/general/faq.html'})
   .state('contact', {url: '/contact', templateUrl: '/views/general/contact.html'})

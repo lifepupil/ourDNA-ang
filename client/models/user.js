@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('poseidon')
+angular.module('ourDna')
 .factory('User', function($rootScope, $http, nodeUrl){
   function User(){
   }
