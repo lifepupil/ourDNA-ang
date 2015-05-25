@@ -1,10 +1,9 @@
 'use strict'
 
 angular.module('ourDna')
-.controller('homeCtrl', function($scope){
-  $scope.profile = {};
+.controller('homeCtrl', function($scope, Person){
   $scope.rawtxt;
-  $scope.family = [];
+
 
   $scope.getDNAfile = function(dnafile) {
     var theFile = dnafile.files[0];
@@ -18,6 +17,7 @@ angular.module('ourDna')
   }
 
   $scope.createProfile = function(profile){
+    // prevent createProfile from running without DNA file upload
     var dataArr = [];
     var fileStr = $scope.rawtxt;
 
@@ -30,17 +30,24 @@ angular.module('ourDna')
         var data = lineData[i].split('\t');
         var dataObj = {
           rsid: data[0],
-          chromosome: data[1],
-          position: data[2],
+          chromosome: parseInt(data[1]),
+          position: parseInt(data[2]),
           genotype: data[3]
         }
         dataArr.push(dataObj);
       }
     };
-    profile.dna = dataArr;
-    $scope.family.push(profile);
-    profile.name = '';
-    console.log('family', $scope.family);
+
+    var personObj = {
+      surName: profile.surName,
+      givenName: profile.givenName,
+      snpArr: dataArr
+    }
+
+    Person.addPerson(personObj);
+    // console.log('person', personObj);
+    profile.givenName = '';
+    profile.surName = '';
   }
 
 

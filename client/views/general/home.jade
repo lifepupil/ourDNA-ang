@@ -3,8 +3,10 @@ h3 HOME
 .row.col-xs-12
   .col-xs-4
     .form-group
-      label(for='namebox') Name
-      input.form-control#nameHome(type='text', name='namebox', ng-model='profile.name')
+      label(for='surname') Last Name
+      input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
+      label(for='givenname') First Name
+      input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
     .form-group
       label(for='dnabox') 23andme data file
       //- input.form-control#dnaHome(type='file', name='dnabox', ng-change='getDNAfile(f)')
