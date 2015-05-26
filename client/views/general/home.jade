@@ -1,15 +1,17 @@
-h3 HOME
+h3 NEW GENOMIC PROFILE
 
 .row.col-xs-12
-  .col-xs-4
-    .form-group
-      label(for='surname') Last Name
-      input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
-      label(for='givenname') First Name
-      input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
-    .form-group
-      label(for='dnabox') 23andme data file
-      //- input.form-control#dnaHome(type='file', name='dnabox', ng-change='getDNAfile(f)')
-      input.form-control#dnaHome(type='file', name='dnabox', onchange='angular.element(this).scope().getDNAfile(this)')
-    .form-group
-      button.btn.btn-success(ng-click='createProfile(profile)') Create Profile
+  .col-xs-3
+    .form(action='/people' enctype='multipart/form-data' method='POST')
+      .form-group
+        label(for='surname') Last Name
+        input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
+        label(for='givenname') First Name
+        input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
+      .form-group
+        label(for='dnabox') 23andme data file
+        //- input.form-control#dnaHome(type='file', name='dnabox')
+        input.form-control#dnaHome(type='file', name='dnabox', onchange='angular.element(this).scope().getDNAfile(this)')
+      .form-group
+        button.btn.btn-success(ng-click='createProfile(profile)') Create Profile
+        //- button.btn.btn-success(type='submit') test

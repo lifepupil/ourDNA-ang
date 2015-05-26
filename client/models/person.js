@@ -6,8 +6,9 @@ angular.module('ourDna')
   }
 
   Person.addPerson = function(thisPerson){
-    console.log('thisPerson', thisPerson);
-    return $http.post(nodeUrl + '/People', thisPerson);
+    // console.log(JSON.stringify(thisPerson.snpArr[0]));
+    // console.log('thisPerson', thisPerson);
+    return $http.post(nodeUrl + '/people', thisPerson);
   };
 
   return Person;
