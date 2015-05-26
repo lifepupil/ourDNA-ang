@@ -8,6 +8,11 @@ h3 NEW GENOMIC PROFILE
         input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
         label(for='givenname') First Name
         input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
+        label(for='sexname') Sex
+        select.form-control#sexHome(name='sexname', ng-model='profile.sex')
+          option Male
+          option Female
+      
       .form-group
         label(for='dnabox') 23andme data file
         //- input.form-control#dnaHome(type='file', name='dnabox')

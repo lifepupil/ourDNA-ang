@@ -31,6 +31,7 @@ angular.module('ourDna')
     var personObj = {
       surName: profile.surName,
       givenName: profile.givenName,
+      sex: profile.sex,
       fileName: $scope.theFileName,
       snpArr: dataArr
     };
