@@ -2,12 +2,13 @@ h3 NEW GENOMIC PROFILE
 
 .row.col-xs-12
   .col-xs-3
-    .form(action='/people' enctype='multipart/form-data' method='POST')
+    //- .form(action='/people' enctype='multipart/form-data' method='POST')
+    .form()
       .form-group
-        label(for='surname') Last Name
-        input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
         label(for='givenname') First Name
         input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
+        label(for='surname') Last Name
+        input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
         label(for='sexname') Sex
         select.form-control#sexHome(name='sexname', ng-model='profile.sex')
           option Male
@@ -20,3 +21,31 @@ h3 NEW GENOMIC PROFILE
       .form-group
         button.btn.btn-success(ng-click='createProfile(profile)') Create Profile
         //- button.btn.btn-success(type='submit') test
+  .col-xs-3
+    .form-group
+      label(for='ggg') Enter single nucleotide DNA id (e.g. rs4898455, rs8100066, rs4477212, rs897634, rs9845270, rs11575897, rs4680)
+      input.form-control#getGenotypeHome(type='text', name='ggg', ng-model='snp_id')
+      button.btn.btn-success(ng-click='getGenotype(snp_id)') Get Genotype
+        
+  .col-xs-6
+    .form-group
+      #container
+        table
+          thead
+            tr
+              th First Name
+              th Last Name
+              th Sex
+              th Chromosome
+              th Genotype
+          tbody
+            tr(ng-repeat='snpResult in snpResults')
+              td {{snpResult.firstName}}
+              td {{snpResult.lastName}}
+              td {{snpResult.sex}}
+              td {{snpResult.chromosomeId}}
+              td {{snpResult.genotype}}
+            tr
+              td
+                p#demo
+            
