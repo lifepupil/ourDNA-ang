@@ -29,23 +29,26 @@ h3 NEW GENOMIC PROFILE
         
   .col-xs-6
     .form-group
-      #container
-        table
-          thead
-            tr
-              th First Name
-              th Last Name
-              th Sex
-              th Chromosome
-              th Genotype
-          tbody
-            tr(ng-repeat='snpResult in snpResults')
-              td {{snpResult.firstName}}
-              td {{snpResult.lastName}}
-              td {{snpResult.sex}}
-              td {{snpResult.chromosomeId}}
-              td {{snpResult.genotype}}
-            tr
-              td
-                p#demo
-            
+      //- p heading 1
+      //- p heading 2
+      //- p heading 3
+      //- p heading 4
+      //- p heading 5
+      //- p#demo
+      table
+        thead
+          tr(ng-show='snpResultShow')
+            th#genotypeHeadHome First Name
+            th#genotypeHeadHome Last Name
+            th#genotypeHeadHome Sex
+            th#genotypeHeadHome Chromosome
+            th#genotypeHeadHome Genotype
+        tbody
+          tr(ng-repeat='snpResult in snpResults')
+            td#genotypeHome {{snpResult.firstName}}
+            td#genotypeHome {{snpResult.lastName}}
+            td#genotypeHome {{snpResult.sex}}
+            td#genotypeHome {{snpResult.chromosomeId}}
+            td#genotypeHome {{snpResult.genotype}}
+    .form-group
+      svg.chart

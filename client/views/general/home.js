@@ -4,12 +4,68 @@ angular.module('ourDna')
 .controller('homeCtrl', function($scope, Person){
   $scope.rawtxt = '';
   $scope.snpResults;
+  $scope.snpResultShow = false;
+
+
+  d3.select("body").style("background-color", "grey");
+  // d3.selectAll("p")
+  //     .data([4, 8, 15, 16, 23, 42, 50])
+  //     .style("font-size", function(d) { return d + "px"; });
+  //
+  // var section = d3.selectAll('p');
+  // var div = section.append('div');
+  // div.html('Hello, world!');
+
+  // var data = [4, 8, 15, 16, 23, 42, 50, 100000];
+  // var x = d3.scale.linear()
+  //   .domain([0, d3.max(data)])
+  //   .range([0, 420]);
+  //
+  // d3.select(".chart")
+  // .selectAll("div")
+  //   .data(data)
+  // .enter().append("div")
+  //   .style("width", function(d) { return x(d) + "px"; })
+  //   .text(function(d) { return d; });
+
+
+  var data = [4, 8, 15, 16, 23, 42];
+  var chrLength = 100;
+  var width = 420,
+      barHeight = 20;
+
+  var x = d3.scale.linear()
+      .domain([0, chrLength])
+      .range([0, width]);
+
+  var chart = d3.select(".chart")
+      .attr("width", width)
+      .attr("height", barHeight * data.length);
+
+  var bar = chart.selectAll("g")
+      .data(data)
+    .enter().append("g")
+      // .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+      .attr("transform", function(d, i) { return "translate("+ barHeight * i + "," + i * barHeight + ")"; });
+
+  bar.append("rect")
+      .attr("width", x)
+      .attr("height", barHeight - 1);
+
+  bar.append("text")
+      .attr("x", function(d) { return x(d) - 3; })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text(function(d) { return d; });
+
+
 
 
   $scope.getGenotype = function(snp_id){
     console.log('inside the controller get getGenotype');
     Person.GET_Genotype(snp_id)
     .then(function(response){
+      $scope.snpResultShow = true;
       var t = response.data[0].chrom[0].genotype;
       var snpArr = [];
       console.log('rs info returned', t);
@@ -28,10 +84,10 @@ angular.module('ourDna')
       }
 
       $scope.snpResults = snpArr;
-      // var str = 'CLICK HERE'
-      // var x = "Rs4680";
-      // var result = str.link("http://www.snpedia.com/index.php/"+ x);
-      // document.getElementById("demo").innerHTML = result;
+      var str = 'CLICK HERE'
+      var x = "Rs4680";
+      var result = str.link("http://www.snpedia.com/index.php/"+ x);
+      document.getElementById("demo").innerHTML = result;
     });
   }
 
