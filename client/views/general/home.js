@@ -42,7 +42,10 @@ angular.module('ourDna')
      .domain([0, chromosomeLength])
      .range([0, w]);
 
-  svg.selectAll("chromosomeTails")
+  var ctGroup = svg.append('g');
+  var snpGroup = svg.append('g');
+
+  ctGroup.selectAll("chromosomeTails")
      .data(chomosomeArms)
     .enter()
      .append("rect")
@@ -52,15 +55,19 @@ angular.module('ourDna')
        .attr('ry', 20)
        .attr("width", function(d, i){ return xScale(d[1]); })
        .attr("height", h - 2)
+       .style('fill', 'white')
+       .style('stroke', 'black')
+       .style('stroke-width', 5)
 
-  svg.selectAll("snps")
+  snpGroup.selectAll("snps")
      .data(dataset)
     .enter()
      .append("rect")
        .attr("x", function(d, i){ return xScale(d[0]); })
        .attr("y", 1)
        .attr("width", function(d, i){ return xScale(d[1]); })
-       .attr("height", h - 2);
+       .attr("height", h - 2)
+       .style('fill', 'red')
 
 
 
