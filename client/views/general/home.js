@@ -29,37 +29,71 @@ angular.module('ourDna')
   //   .text(function(d) { return d; });
 
 
-  var data = [4, 8, 15, 16, 23, 42];
-  var chrLength = 100;
-  var width = 420,
-      barHeight = 20;
+  // var dataset = [4, 8, 15, 16, 23, 42, 79, 41, 12, 44, 23];
+  var dataset = [
+                  [ 5,     20 ],
+                  [ 580,   60 ],
+                  [ 780,   20 ],
+                  [ 880,   60 ],
+                  [ 250,   50 ],
+                  [ 330,   95 ],
+                  [ 410,   12 ],
+                  [ 475,   44 ],
+                  [ 45,    40 ],
+                  [ 105,    31 ],
+                  [ 220,   88 ]
+              ];
+  var w = 1200;
+  var h = 200;
+  var svg = d3.select(".chart")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+  // var data = [4, 8, 15, 16, 23, 42];
+  // var chrLength = 100;
+  // var width = 550,
+  //     barHeight = 20;
+  // var x = d3.scale.linear()
+  //     .domain([0, chrLength])
+  //     .range([0, width]);
+  // var chart = d3.select(".chart")
+  //     .attr("width", width)
+  //     .attr("height", barHeight * data.length);
+  // var bar = chart.selectAll("g")
+  //     .data(data)
+  //   .enter().append("g")
+  //     .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+  // bar.append("rect")
+  //     .attr("width", x)
+  //     .attr("height", barHeight - 1);
+  // bar.append("text")
+  //     .attr("x", function(d) { return x(d) - 3; })
+  //     .attr("y", barHeight / 2)
+  //     .attr("dy", ".35em")
+  //     .text(function(d) { return d; });
 
-  var x = d3.scale.linear()
-      .domain([0, chrLength])
-      .range([0, width]);
 
-  var chart = d3.select(".chart")
-      .attr("width", width)
-      .attr("height", barHeight * data.length);
+  svg.selectAll("rect")
+     .data(dataset)
+     .enter()
+     .append("rect")
+     .attr("x", function(d, i){
 
-  var bar = chart.selectAll("g")
-      .data(data)
-    .enter().append("g")
-      // .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-      .attr("transform", function(d, i) { return "translate("+ barHeight * i + "," + i * barHeight + ")"; });
-
-  bar.append("rect")
-      .attr("width", x)
-      .attr("height", barHeight - 1);
-
-  bar.append("text")
-      .attr("x", function(d) { return x(d) - 3; })
-      .attr("y", barHeight / 2)
-      .attr("dy", ".35em")
-      .text(function(d) { return d; });
+       return d[0];
+      //  return i * (w / dataset.length);
+      //  return i * (w / dataset.length);
+     })
+     .attr("y", 1)
+     .attr("width", function(d, i){
+       return d[1];
+      //  return d * Math.random();
+     })
+     .attr("height", 100)
+     .text('hi');
 
 
 
+//~~~~~~~~~~~~~~~~
 
   $scope.getGenotype = function(snp_id){
     console.log('inside the controller get getGenotype');
