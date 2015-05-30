@@ -8,6 +8,13 @@ angular.module('ourDna')
 
 
   d3.select("body").style("background-color", "grey");
+  var chromosomeLength = 26000000;
+  var p_endPos = 6000000;
+  var q_endPos = chromosomeLength - p_endPos;
+  var chomosomeArms = [
+    [0, p_endPos],
+    [p_endPos + 1, q_endPos]
+  ];
 
   var dataset = [
                   [ 50000,     20000 ],
@@ -22,32 +29,38 @@ angular.module('ourDna')
                   [ 7800000,   29000 ],
                   [ 8800000,   60000 ],
                   [ 11880000,   61000 ],
-                  [ 18000000,   1000000 ]
+                  [ 25000000,   600000 ]
               ];
   var w = 1100;
-  var h = 200;
+  var h = 100;
   var svg = d3.select(".chromosomeView")
       .append("svg")
       .attr("width", w)
       .attr("height", h);
 
   var xScale = d3.scale.linear()
-                       .domain([0, 25000000])
-                       .range([0, w]);
+     .domain([0, chromosomeLength])
+     .range([0, w]);
 
-  svg.selectAll("rect")
-     .data(dataset)
-     .enter()
+  svg.selectAll("chromosomeTails")
+     .data(chomosomeArms)
+    .enter()
      .append("rect")
-     .attr("x", function(d, i){
-       return xScale(d[0]);
-     })
-     .attr("y", 1)
-     .attr("width", function(d, i){ return d[1]; })
-     .attr("width", function(d, i){ return xScale(d[1]); })
-     .attr("height", 100)
-     .text('hi');
+       .attr("x", function(d, i){ return xScale(d[0]); })
+       .attr("y", 1)
+       .attr('rx', 20)
+       .attr('ry', 20)
+       .attr("width", function(d, i){ return xScale(d[1]); })
+       .attr("height", h - 2)
 
+  svg.selectAll("snps")
+     .data(dataset)
+    .enter()
+     .append("rect")
+       .attr("x", function(d, i){ return xScale(d[0]); })
+       .attr("y", 1)
+       .attr("width", function(d, i){ return xScale(d[1]); })
+       .attr("height", h - 2);
 
 
 
