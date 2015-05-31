@@ -6,10 +6,14 @@ angular.module('ourDna')
   }
 
   Person.addPerson = function(thisPerson){
-    // console.log(JSON.stringify(thisPerson.snpArr[0]));
-    // console.log('thisPerson', thisPerson);
     return $http.post(nodeUrl + '/people', thisPerson);
   };
+
+
+  Person.GET_Genotype = function(thisSNPid){
+    console.log('inside the factory get GET_Genotype', thisSNPid);
+    return $http.get(nodeUrl + '/people/' + thisSNPid);
+  }
 
   return Person;
 });
