@@ -1,0 +1,34 @@
+h3 A SNP is a single base-pair variant 
+h4 Query MondoDB for a specific SNP information below
+
+.row.col-xs-12
+  .col-xs-3
+    //- .form(action='/people' enctype='multipart/form-data' method='POST')
+    .form-group
+      label(for='ggg') Enter single nucleotide DNA id (e.g. rs4898455, rs8100066, rs897634, rs11575897, rs4680)
+      input.form-control#getGenotypeHome(type='text', name='ggg', ng-model='snp_id')
+      button.btn.btn-success(ng-click='getGenotype(snp_id)') Get Genotype
+        
+  .col-xs-6
+    .form-group(ng-show='snpResultShow')
+      h3 Chromosome {{thisChromosome}}  ({{thisChromosomeLength}} base-pairs long)
+      table
+        thead
+          tr
+            th#genotypeHeadHome First Name
+            th#genotypeHeadHome Last Name
+            th#genotypeHeadHome Sex
+            th#genotypeHeadHome Chromosome
+            th#genotypeHeadHome Position
+            th#genotypeHeadHome Genotype
+        tbody
+          tr(ng-repeat='snpResult in snpResults')
+            td#genotypeHome {{snpResult.firstName}}
+            td#genotypeHome {{snpResult.lastName}}
+            td#genotypeHome {{snpResult.sex}}
+            td#genotypeHome {{snpResult.chromosomeId}}
+            td#genotypeHome {{snpResult.position}}
+            td#genotypeHome {{snpResult.genotype}}
+.row.col-xs-12
+  .form-group
+    svg.chromosomeView.chromosomeTails
