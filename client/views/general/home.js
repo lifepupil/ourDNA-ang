@@ -33,7 +33,7 @@ angular.module('ourDna')
     ['22', 51304566, 14.7],
     ['X', 155270560, 60.6],
     ['Y', 59373566, 12.5],
-    ['mtDNA', 16569, 0]
+    ['MT', 16569, 0]
   ];
 
 
@@ -74,6 +74,9 @@ angular.module('ourDna')
         }
       }
 
+      $scope.thisChromosome = chromosomeInfo[chromIndex][0];
+      $scope.thisChromosomeLength = chromosomeInfo[chromIndex][1];
+
       var chromosomeLength = chromosomeInfo[chromIndex][1];
       var p_endPos = chromosomeInfo[chromIndex][2] * 1000000;
       var q_endPos = chromosomeLength - p_endPos;
@@ -81,6 +84,8 @@ angular.module('ourDna')
         [0, p_endPos],
         [p_endPos + 1, q_endPos]
       ];
+
+      d3.selectAll("svg > *").remove();
 
       var dataset = [[$scope.snpResults[0].position, 100000]]
       var w = 1100;
