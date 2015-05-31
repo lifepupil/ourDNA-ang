@@ -42,6 +42,7 @@ h3 NEW GENOMIC PROFILE
             th#genotypeHeadHome Last Name
             th#genotypeHeadHome Sex
             th#genotypeHeadHome Chromosome
+            th#genotypeHeadHome Position
             th#genotypeHeadHome Genotype
         tbody
           tr(ng-repeat='snpResult in snpResults')
@@ -49,6 +50,7 @@ h3 NEW GENOMIC PROFILE
             td#genotypeHome {{snpResult.lastName}}
             td#genotypeHome {{snpResult.sex}}
             td#genotypeHome {{snpResult.chromosomeId}}
+            td#genotypeHome {{snpResult.position}}
             td#genotypeHome {{snpResult.genotype}}
 .row.col-xs-12
   .form-group
