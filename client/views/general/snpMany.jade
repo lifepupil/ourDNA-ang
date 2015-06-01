@@ -1,0 +1,35 @@
+h3 Compare chromosomes
+h4 Query MondoDB for a specific chromosome 
+
+.row.col-xs-12
+  .col-xs-3
+    //- .form(action='/people' enctype='multipart/form-data' method='POST')
+    .form-group
+
+      label(for='sC') Select a chromosome
+      select.form-control(name='sC', ng-model='selectedChromosome')
+        option(ng-repeat='c in chromosomeNames') {{c}}
+      button.btn.btn-success(ng-click='compareChromosomes(selectedChromosome)') Go!
+  .col-xs-6
+    .form-group(ng-show='snpResultShow')
+      h3 Chromosome {{thisChromosome}}  ({{thisChromosomeLength}} base-pairs long)
+      table
+        thead
+          tr
+            th#genotypeHeadHome First Name
+            th#genotypeHeadHome Last Name
+            th#genotypeHeadHome Sex
+            th#genotypeHeadHome Chromosome
+            th#genotypeHeadHome Position
+            th#genotypeHeadHome Genotype
+        tbody
+          tr(ng-repeat='snpResult in snpResults')
+            td#genotypeHome {{snpResult.firstName}}
+            td#genotypeHome {{snpResult.lastName}}
+            td#genotypeHome {{snpResult.sex}}
+            td#genotypeHome {{snpResult.chromosomeId}}
+            td#genotypeHome {{snpResult.position}}
+            td#genotypeHome {{snpResult.genotype}}
+.row.col-xs-12
+  .form-group
+    svg.chromosomeView.chromosomeTails

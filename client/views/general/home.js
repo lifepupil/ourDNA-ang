@@ -5,7 +5,7 @@ angular.module('ourDna')
   $scope.rawtxt = '';
   $scope.snpResults;
   $scope.snpResultShow = false;
-
+  $scope.chromosomeNames = [];
 
   // d3.select("body").style("background-color", "grey");
   var chromosomeInfo = [
@@ -33,9 +33,11 @@ angular.module('ourDna')
     ['22', 51304566, 14.7],
     ['X', 155270560, 60.6],
     ['Y', 59373566, 12.5],
-    ['mtDNA', 16569, 0]
+    ['MT', 16569, 0]
   ];
-
+  for(var i = 0; i < chromosomeInfo.length; i++){
+    $scope.chromosomeNames.push(chromosomeInfo[i][0]);
+  }
 
 
 
@@ -48,80 +50,65 @@ angular.module('ourDna')
     Person.GET_Genotype(snp_id)
     .then(function(response){
       $scope.snpResultShow = true;
-      var t = response.data[0].chrom[0].genotype;
-      var snpArr = [];
-      console.log('rs info returned', t);
-
-      var snpObj = {};
-
-      for(var i = 0; i < response.data.length; i++){
-        snpObj = {
-          firstName: response.data[i].givenName,
-          lastName: response.data[i].surName,
-          genotype: response.data[i].chrom[0].genotype,
-          position: response.data[i].chrom[0].position,
-          sex: response.data[i].sex,
-          chromosomeId: response.data[i].chromosomeId
-        }
-        snpArr.push(snpObj);
-      }
-
-      $scope.snpResults = snpArr;
-      var chromIndex = 0;
-      for(var i = 0; i < chromosomeInfo.length; i++){
-        if(chromosomeInfo[i][0] === $scope.snpResults[0].chromosomeId){
-          chromIndex = i;
-        }
-      }
-
-      var chromosomeLength = chromosomeInfo[chromIndex][1];
-      var p_endPos = chromosomeInfo[chromIndex][2] * 1000000;
-      var q_endPos = chromosomeLength - p_endPos;
-      var chomosomeArms = [
-        [0, p_endPos],
-        [p_endPos + 1, q_endPos]
-      ];
-
-      var dataset = [[$scope.snpResults[0].position, 100000]]
-      var w = 1100;
-      var h = 100;
-      var svg = d3.select(".chromosomeView")
-          .append("svg")
-          .attr("width", w)
-          .attr("height", h);
-
-      var xScale = d3.scale.linear()
-         .domain([0, chromosomeLength])
-         .range([0, w]);
-
-      var ctGroup = svg.append('g');
-      var snpGroup = svg.append('g');
-
-      ctGroup.selectAll("chromosomeTails")
-         .data(chomosomeArms)
-        .enter()
-         .append("rect")
-           .attr("x", function(d, i){ return xScale(d[0]); })
-           .attr("y", 1)
-           .attr('rx', 20)
-           .attr('ry', 20)
-           .attr("width", function(d, i){ return xScale(d[1]); })
-           .attr("height", h - 2)
-           .style('fill', 'white')
-           .style('stroke', 'black')
-           .style('stroke-width', 5)
-
-      snpGroup.selectAll("snps")
-         .data(dataset)
-        .enter()
-         .append("rect")
-           .attr("x", function(d, i){ return xScale(d[0]); })
-           .attr("y", 1)
-           .attr("width", function(d, i){ return xScale(d[1]); })
-           .attr("height", h - 2)
-           .style('fill', 'red')
+      $scope.snpResults = personTableData(response);
+      var chromIndex = whichChrom();
+      var snpWidth = chromosomeInfo[chromIndex][1]/1000;
+      var dataset = [[$scope.snpResults[0].position, snpWidth]];
+      displaySNPs(dataset, chromIndex);
     });
-  }
+  };
+
+  $scope.compareChromosomes = function(selectedChromosome){
+    console.log('inside the home ctrler for compareChromosomes');
+    Person.GET_Chromosome(selectedChromosome)
+    .then(function(response){
+      $scope.snpResultShow = true;
+      $scope.snpResults = personTableData(response);
+      var chromIndex = whichChrom();
+      var snpWidth = chromosomeInfo[chromIndex][1]/50000;
+      var dataset = [];
+      dataset = prepSNPs(response, snpWidth);
+      displaySNPs(dataset, chromIndex);
+    });
+  };
+
+
+  function prepSNPs(response ,snpWidth){
+    var snpArr = [];
+    var snp;
+    for(var i = 0; i < response.data[0].chrom.length; i++){
+      snp = [response.data[0].chrom[i].position, snpWidth];
+      snpArr.push(snp);
+    }
+    console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0]);
+    return snpArr;
+  };
+
+  function personTableData(response){
+    var snpArr = [];
+    var snpObj = {};
+    for(var i = 0; i < response.data.length; i++){
+      snpObj = {
+        firstName: response.data[i].givenName,
+        lastName: response.data[i].surName,
+        genotype: response.data[i].chrom[0].genotype,
+        position: response.data[i].chrom[0].position,
+        sex: response.data[i].sex,
+        chromosomeId: response.data[i].chromosomeId
+      }
+      snpArr.push(snpObj);
+    }
+    return snpArr;
+  };
+
+  function whichChrom(){
+    var chromIndex = 0;
+    for(var i = 0; i < chromosomeInfo.length; i++){
+      if(chromosomeInfo[i][0] === $scope.snpResults[0].chromosomeId){
+        return i;
+      }
+    }
+  };
 
   $scope.getDNAfile = function(dnafile){
     var theFile = dnafile.files[0];
@@ -158,9 +145,64 @@ angular.module('ourDna')
     console.log('person: ', personObj);
     Person.addPerson(personObj);
 
-    // $('#dnaHome').val('');
-    // profile.givenName = '';
-    // profile.surName = '';
-    // profile.sex = '';
+    $('#dnaHome').val('');
+    profile.givenName = '';
+    profile.surName = '';
+    profile.sex = '';
   };
+
+  function displaySNPs(dataset, chromIndex){
+    console.log('displaySNPs test - dataset[0] ', dataset[0]);
+    d3.selectAll("svg > *").remove();
+    var w = 1100;
+    var h = 100;
+
+    $scope.thisChromosome = chromosomeInfo[chromIndex][0];
+    $scope.thisChromosomeLength = chromosomeInfo[chromIndex][1];
+
+    var chromosomeLength = chromosomeInfo[chromIndex][1];
+    var p_endPos = chromosomeInfo[chromIndex][2] * 1000000;
+    var q_endPos = chromosomeLength - p_endPos;
+    var chomosomeArms = [
+      [0, p_endPos],
+      [p_endPos + 1, q_endPos]
+    ];
+
+    var svg = d3.select(".chromosomeView")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+    var xScale = d3.scale.linear()
+       .domain([0, chromosomeLength])
+       .range([0, w]);
+
+    var ctGroup = svg.append('g');
+    var snpGroup = svg.append('g');
+
+    ctGroup.selectAll("chromosomeTails")
+       .data(chomosomeArms)
+      .enter()
+       .append("rect")
+         .attr("x", function(d, i){ return xScale(d[0]); })
+         .attr("y", 1)
+         .attr('rx', 20)
+         .attr('ry', 20)
+         .attr("width", function(d, i){ return xScale(d[1]); })
+         .attr("height", h - 2)
+         .style('fill', 'white')
+         .style('stroke', 'black')
+         .style('stroke-width', 5)
+
+    snpGroup.selectAll("snps")
+       .data(dataset)
+      .enter()
+       .append("rect")
+         .attr("x", function(d, i){ return xScale(d[0]); })
+         .attr("y", 1)
+         .attr("width", function(d, i){ return xScale(d[1]); })
+         .attr("height", h - 2)
+         .style('fill', 'red')
+  };
+
 });

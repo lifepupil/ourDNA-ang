@@ -21,37 +21,3 @@ h3 NEW GENOMIC PROFILE
       .form-group
         button.btn.btn-success(ng-click='createProfile(profile)') Create Profile
         //- button.btn.btn-success(type='submit') test
-  .col-xs-3
-    .form-group
-      label(for='ggg') Enter single nucleotide DNA id (e.g. rs4898455, rs8100066, rs4477212, rs897634, rs9845270, rs11575897, rs4680)
-      input.form-control#getGenotypeHome(type='text', name='ggg', ng-model='snp_id')
-      button.btn.btn-success(ng-click='getGenotype(snp_id)') Get Genotype
-        
-  .col-xs-6
-    .form-group
-      //- p heading 1
-      //- p heading 2
-      //- p heading 3
-      //- p heading 4
-      //- p heading 5
-      //- p#demo
-      table
-        thead
-          tr(ng-show='snpResultShow')
-            th#genotypeHeadHome First Name
-            th#genotypeHeadHome Last Name
-            th#genotypeHeadHome Sex
-            th#genotypeHeadHome Chromosome
-            th#genotypeHeadHome Position
-            th#genotypeHeadHome Genotype
-        tbody
-          tr(ng-repeat='snpResult in snpResults')
-            td#genotypeHome {{snpResult.firstName}}
-            td#genotypeHome {{snpResult.lastName}}
-            td#genotypeHome {{snpResult.sex}}
-            td#genotypeHome {{snpResult.chromosomeId}}
-            td#genotypeHome {{snpResult.position}}
-            td#genotypeHome {{snpResult.genotype}}
-.row.col-xs-12
-  .form-group
-    svg.chromosomeView.chromosomeTails

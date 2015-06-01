@@ -10,9 +10,11 @@ nav.navbar.navbar-default(ng-controller='NavCtrl')
     #navbar.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-left(ng-show='activeUser')
         li: a(ui-sref='home'): i.fa.fa.fa-home &nbsp; Home
-        li: a(ui-sref='about'): i.fa.fa.fa-info &nbsp; About
-        li: a(ui-sref='faq'): i.fa.fa.fa-question &nbsp; FAQ
-        li: a(ui-sref='contact'): i.fa.fa.fa-phone &nbsp; Contact
+        li: a(ui-sref='snpOne'): i.fa.fa.fa-home &nbsp; What is a SNP?
+        li: a(ui-sref='snpMany'): i.fa.fa.fa-home &nbsp; Compare chromosomes
+        //- li: a(ui-sref='about'): i.fa.fa.fa-info &nbsp; About
+        //- li: a(ui-sref='faq'): i.fa.fa.fa-question &nbsp; FAQ
+        //- li: a(ui-sref='contact'): i.fa.fa.fa-phone &nbsp; Contact
         li: button.btn.btn-danger(ng-click='logout()'): i.fa.fa-sign-out &nbsp; {{displayName}}
       ul.nav.navbar-nav.navbar-left(ng-hide='activeUser')
         li: a(ui-sref='home'): i.fa.fa.fa-home &nbsp; Home
