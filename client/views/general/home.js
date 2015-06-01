@@ -51,8 +51,10 @@ angular.module('ourDna')
     .then(function(response){
       $scope.snpResultShow = true;
       $scope.snpResults = personTableData(response);
-      var dataset = [[$scope.snpResults[0].position, 100000]]
-      displaySNPs(dataset);
+      var chromIndex = whichChrom();
+      var snpWidth = chromosomeInfo[chromIndex][1]/1000;
+      var dataset = [[$scope.snpResults[0].position, snpWidth]];
+      displaySNPs(dataset, chromIndex);
     });
   };
 
@@ -60,25 +62,25 @@ angular.module('ourDna')
     console.log('inside the home ctrler for compareChromosomes');
     Person.GET_Chromosome(selectedChromosome)
     .then(function(response){
-      console.log(' compareChromosomes response.data[0]', response.data[0]);
       $scope.snpResultShow = true;
       $scope.snpResults = personTableData(response);
-
+      var chromIndex = whichChrom();
+      var snpWidth = chromosomeInfo[chromIndex][1]/50000;
       var dataset = [];
-      dataset = prepSNPs(response);
-      displaySNPs(dataset);
+      dataset = prepSNPs(response, snpWidth);
+      displaySNPs(dataset, chromIndex);
     });
   };
 
 
-  function prepSNPs(response){
+  function prepSNPs(response ,snpWidth){
     var snpArr = [];
     var snp;
     for(var i = 0; i < response.data[0].chrom.length; i++){
-      snp = [response.data[0].chrom[i].position, 1000];
+      snp = [response.data[0].chrom[i].position, snpWidth];
       snpArr.push(snp);
     }
-    console.log('inside displaySNPs - snpArr[0][0]', snpArr[0][0]);
+    console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0]);
     return snpArr;
   };
 
@@ -143,18 +145,17 @@ angular.module('ourDna')
     console.log('person: ', personObj);
     Person.addPerson(personObj);
 
-    // $('#dnaHome').val('');
-    // profile.givenName = '';
-    // profile.surName = '';
-    // profile.sex = '';
+    $('#dnaHome').val('');
+    profile.givenName = '';
+    profile.surName = '';
+    profile.sex = '';
   };
 
-  function displaySNPs(dataset){
+  function displaySNPs(dataset, chromIndex){
     console.log('displaySNPs test - dataset[0] ', dataset[0]);
     d3.selectAll("svg > *").remove();
     var w = 1100;
     var h = 100;
-    var chromIndex = whichChrom();
 
     $scope.thisChromosome = chromosomeInfo[chromIndex][0];
     $scope.thisChromosomeLength = chromosomeInfo[chromIndex][1];

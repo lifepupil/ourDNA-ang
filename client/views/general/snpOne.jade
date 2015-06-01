@@ -5,7 +5,7 @@ h4 Query MondoDB for a specific SNP information below
   .col-xs-3
     //- .form(action='/people' enctype='multipart/form-data' method='POST')
     .form-group
-      label(for='ggg') Enter single nucleotide DNA id (e.g. rs4898455, rs8100066, rs897634, rs11575897, rs4680)
+      label(for='ggg') Enter single nucleotide DNA id (e.g. rs4898455, rs8100066, rs897634, rs2298011, rs11575897, rs4680)
       input.form-control#getGenotypeHome(type='text', name='ggg', ng-model='snp_id')
       button.btn.btn-success(ng-click='getGenotype(snp_id)') Get Genotype
         
