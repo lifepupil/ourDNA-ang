@@ -6,6 +6,7 @@ angular.module('ourDna')
 
   $stateProvider
   .state('home', {url: '/', templateUrl: '/views/general/home.html', controller: 'homeCtrl'})
+  .state('addGenomicProfile', {url: '/', templateUrl: '/views/general/addGenomicProfile.html', controller: 'homeCtrl'})
   .state('snpOne', {url: '/snpOne', templateUrl: '/views/general/snpOne.html', controller: 'homeCtrl'})
   .state('snpMany', {url: '/snpMany', templateUrl: '/views/general/snpMany.html', controller: 'homeCtrl'})
   .state('about', {url: '/about', templateUrl: '/views/general/about.html'})

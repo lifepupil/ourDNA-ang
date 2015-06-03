@@ -1,18 +1,22 @@
-h3 Compare chromosomes
-h4 Query MondoDB for a specific chromosome 
 
-.row.col-xs-12
+.row
+  .col-xs-6
+    h2#text Compare chromosomes
+    h3#text Query MondoDB for a specific chromosome 
+  .col-xs-6
+    img(ng-src='{{humanKaryotype}}')
+    //- img#chromosomeToMolecule(ng-src='{{humanKaryotype}}')
+      
+.row
   .col-xs-3
-    //- .form(action='/people' enctype='multipart/form-data' method='POST')
     .form-group
-
-      label(for='sC') Select a chromosome
+      label#text(for='sC') Select a chromosome
       select.form-control(name='sC', ng-model='selectedChromosome')
         option(ng-repeat='c in chromosomeNames') {{c}}
       button.btn.btn-success(ng-click='compareChromosomes(selectedChromosome)') Go!
   .col-xs-6
     .form-group(ng-show='snpResultShow')
-      h3 Chromosome {{thisChromosome}}  ({{thisChromosomeLength}} base-pairs long)
+      h3#text Chromosome {{thisChromosome}}  ({{thisChromosomeLength | number}} base-pairs long)
       table
         thead
           tr
