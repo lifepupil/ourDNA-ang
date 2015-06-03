@@ -1,0 +1,25 @@
+h3#text NEW GENOMIC PROFILE
+
+.row
+  .col-xs-3
+    //- .form(action='/people' enctype='multipart/form-data' method='POST')
+    .form-group
+      label#text(for='givenname') First Name
+      input.form-control#firstNameHome(type='text', name='givenname', ng-model='profile.givenName')
+      label#text(for='surname') Last Name
+      input.form-control#lastNameHome(type='text', name='surname', ng-model='profile.surName')
+      label#text(for='sexname') Sex
+      select.form-control#sexHome(name='sexname', ng-model='profile.sex')
+        option Male
+        option Female
+.row
+  .col-xs-3
+    .form-group
+      label#text(for='dnabox') 23andme data file
+      //- input.form-control#dnaHome(type='file', name='dnabox')
+      input.form-control#dnaHome(type='file', name='dnabox', onchange='angular.element(this).scope().getDNAfile(this)')
+    .form-group
+      button.btn.btn-success(ng-click='createProfile(profile)') Create Profile
+      //- button.btn.btn-success(type='submit') test
+  .col-xs-3
+    img#CSS23andme(ng-src='{{Logo23andme}}')

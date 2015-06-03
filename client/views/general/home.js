@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('ourDna')
-.controller('homeCtrl', function($scope, Person){
+.controller('homeCtrl', function($scope, Person, $sce, $state){
   $scope.rawtxt = '';
   $scope.snpResults;
   $scope.snpResultShow = false;
   $scope.chromosomeNames = [];
-
+  $scope.snpediaUrl = '';
+  $scope.dancingChrom = 'assets/dancingChrom.png';
+  $scope.circleDance = 'assets/circledance.jpg';
+  $scope.dnaAnimation = 'assets/dna_animation.gif';
+  $scope.humanKaryotype = 'assets/chromToDNA.jpg';
+  $scope.Logo23andme = 'assets/23andMe_logo.png';
   // d3.select("body").style("background-color", "grey");
   var chromosomeInfo = [
     ['1', 249250621, 125.0],
@@ -35,20 +40,29 @@ angular.module('ourDna')
     ['Y', 59373566, 12.5],
     ['MT', 16569, 0]
   ];
+  var totalBasePairs = 0;
   for(var i = 0; i < chromosomeInfo.length; i++){
     $scope.chromosomeNames.push(chromosomeInfo[i][0]);
+    totalBasePairs += chromosomeInfo[i][1];
   }
-
+  console.log('totalBasePairs', totalBasePairs);
 
 
 
 
 //~~~~~~~~~~~~~~~~
 
+  $scope.startourDNA = function(){
+      $state.go('addGenomicProfile');
+    };
+
   $scope.getGenotype = function(snp_id){
     console.log('inside the controller get getGenotype');
     Person.GET_Genotype(snp_id)
     .then(function(response){
+      var snpRs = snp_id.replace(/r/g, 'R');
+      console.log(snpRs);
+      $scope.snpediaUrl = $sce.trustAsResourceUrl('http://www.snpedia.com/index.php/' + snpRs);
       $scope.snpResultShow = true;
       $scope.snpResults = personTableData(response);
       var chromIndex = whichChrom();
@@ -67,22 +81,65 @@ angular.module('ourDna')
       var chromIndex = whichChrom();
       var snpWidth = chromosomeInfo[chromIndex][1]/50000;
       var dataset = [];
-      dataset = prepSNPs(response, snpWidth);
+      var colorComps = compareSnps(response);
+        console.log('colorComps', colorComps);
+      dataset = prepSNPs(response, snpWidth, colorComps);
       displaySNPs(dataset, chromIndex);
     });
   };
 
+  function compareSnps(response){
+    var person1 = response.data[0].chrom;
+    var person2 = response.data[1].chrom;
+    var comparisonArr = [];
+    var thisComparison = '';
+    console.log('genotypes - person1:', person1[0].genotype, ' person2: ', person2[0].genotype);
+    for(var i = 0; i < response.data[0].chrom.length; i++){
+      if(person1[i].genotype === person2[i].genotype){
+        thisComparison = 'green';
+      } else {
+        thisComparison = 'red';
+      }
+      comparisonArr.push(thisComparison);
+    }
+    return comparisonArr;
+  };
 
-  function prepSNPs(response ,snpWidth){
+  function prepSNPs(response ,snpWidth, colorComps){
     var snpArr = [];
     var snp;
     for(var i = 0; i < response.data[0].chrom.length; i++){
-      snp = [response.data[0].chrom[i].position, snpWidth];
+      snp = [response.data[0].chrom[i].position, snpWidth, colorComps[i]];
       snpArr.push(snp);
     }
-    console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0]);
+    console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0], colorComps[0]);
     return snpArr;
   };
+
+  // $scope.compareChromosomes = function(selectedChromosome){
+  //   console.log('inside the home ctrler for compareChromosomes');
+  //   Person.GET_Chromosome(selectedChromosome)
+  //   .then(function(response){
+  //     $scope.snpResultShow = true;
+  //     $scope.snpResults = personTableData(response);
+  //     var chromIndex = whichChrom();
+  //     var snpWidth = chromosomeInfo[chromIndex][1]/50000;
+  //     var dataset = [];
+  //     dataset = prepSNPs(response, snpWidth);
+  //     displaySNPs(dataset, chromIndex);
+  //   });
+  // };
+  //
+  // function prepSNPs(response ,snpWidth){
+  //   var snpArr = [];
+  //   var snp;
+  //   for(var i = 0; i < response.data[0].chrom.length; i++){
+  //     snp = [response.data[0].chrom[i].position, snpWidth];
+  //     snpArr.push(snp);
+  //   }
+  //   console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0]);
+  //   return snpArr;
+  // };
 
   function personTableData(response){
     var snpArr = [];
@@ -202,7 +259,7 @@ angular.module('ourDna')
          .attr("y", 1)
          .attr("width", function(d, i){ return xScale(d[1]); })
          .attr("height", h - 2)
-         .style('fill', 'red')
+         .style('fill', function(d, i){ return d[2]; })
   };
 
 });
