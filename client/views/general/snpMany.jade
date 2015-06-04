@@ -22,17 +22,11 @@
             th#genotypeHeadHome First Name
             th#genotypeHeadHome Last Name
             th#genotypeHeadHome Sex
-            th#genotypeHeadHome Chromosome
-            th#genotypeHeadHome Position
-            th#genotypeHeadHome Genotype
         tbody
           tr(ng-repeat='snpResult in snpResults')
             td#genotypeHome {{snpResult.firstName}}
             td#genotypeHome {{snpResult.lastName}}
             td#genotypeHome {{snpResult.sex}}
-            td#genotypeHome {{snpResult.chromosomeId}}
-            td#genotypeHome {{snpResult.position}}
-            td#genotypeHome {{snpResult.genotype}}
 .row.col-xs-12
   .form-group
     svg.chromosomeView.chromosomeTails
