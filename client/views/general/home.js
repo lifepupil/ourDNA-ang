@@ -93,12 +93,24 @@ angular.module('ourDna')
     var person2 = response.data[1].chrom;
     var comparisonArr = [];
     var thisComparison = '';
+    var p1Genotype;
+    var p2Genotype;
+
     console.log('genotypes - person1:', person1[0].genotype, ' person2: ', person2[0].genotype);
     for(var i = 0; i < response.data[0].chrom.length; i++){
-      if(person1[i].genotype === person2[i].genotype){
-        thisComparison = 'green';
-      } else {
-        thisComparison = 'red';
+      var baseFilter = /^[ATCG][ATGC]?/;
+      // console.log('baseFilter.exec(person1[i].genotype) ', baseFilter.exec(person1[i].genotype));
+      p1Genotype = (baseFilter.exec(person1[i].genotype) === null) ? undefined : person1[i].genotype;
+      p2Genotype = (baseFilter.exec(person2[i].genotype) === null) ? undefined : person2[i].genotype;
+
+      thisComparison = 'grey';
+      if(p1Genotype && p2Genotype){
+        if(p1Genotype === p2Genotype){
+          // console.log('p1Genotype:', p1Genotype, ' p2Genotype:', p2Genotype);
+          thisComparison = 'green';
+        } else {
+          thisComparison = 'red';
+        }
       }
       comparisonArr.push(thisComparison);
     }
@@ -112,34 +124,9 @@ angular.module('ourDna')
       snp = [response.data[0].chrom[i].position, snpWidth, colorComps[i]];
       snpArr.push(snp);
     }
-    console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0], colorComps[0]);
+    console.log('about to exit prepSNPs - snpArr[0][0] ', snpArr[0][0], 'colorComps[0] ', colorComps[0]);
     return snpArr;
   };
-
-  // $scope.compareChromosomes = function(selectedChromosome){
-  //   console.log('inside the home ctrler for compareChromosomes');
-  //   Person.GET_Chromosome(selectedChromosome)
-  //   .then(function(response){
-  //     $scope.snpResultShow = true;
-  //     $scope.snpResults = personTableData(response);
-  //     var chromIndex = whichChrom();
-  //     var snpWidth = chromosomeInfo[chromIndex][1]/50000;
-  //     var dataset = [];
-  //     dataset = prepSNPs(response, snpWidth);
-  //     displaySNPs(dataset, chromIndex);
-  //   });
-  // };
-  //
-  // function prepSNPs(response ,snpWidth){
-  //   var snpArr = [];
-  //   var snp;
-  //   for(var i = 0; i < response.data[0].chrom.length; i++){
-  //     snp = [response.data[0].chrom[i].position, snpWidth];
-  //     snpArr.push(snp);
-  //   }
-  //   console.log('inside prepSNPs - snpArr[0][0]', snpArr[0][0]);
-  //   return snpArr;
-  // };
 
   function personTableData(response){
     var snpArr = [];
