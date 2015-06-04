@@ -11,27 +11,19 @@
       img#littleLogo23andme(ng-src='{{Logo23andme}}')
     img(ng-src='{{circleDance}}')
     img#dancingChrom(ng-src='{{dancingChrom}}')
-//- .row
-//-   .col-xs-10.col-xs-offset-1
-//-     #introText
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - 
-//-       h2 - Each person inherits one set of chromosomes from each parent
-//-       h2 ~~~~~~~~~~~~~~~
-//-       
-//-       h2 - 
-//-       h2 - The human genome is all 23 pairs of chromosomes 
-//-       h2 - The purpose of this app is to allow you to compare 
-//-       h2 - What DNA regions are most shared by family members?
-//-       h2 - 
+.row
+  .col-xs-10.col-xs-offset-1
+    #aboutMe
+      img#chromosomeToMolecule(ng-src='{{humanKaryotype}}')
+
 .row
   .col-xs-12.col-xs-offset-5
     button.btn.btn-success(ng-click='startourDNA()') Lets Start!
+      //- h2 - Each person inherits one set of chromosomes from each parent
+      //- h2 ~~~~~~~~~~~~~~~
+      //- 
+      //- h2 - 
+      //- h2 - The human genome is all 23 pairs of chromosomes 
+      //- h2 - The purpose of this app is to allow you to compare 
+      //- h2 - What DNA regions are most shared by family members?
+      //- h2 - 
