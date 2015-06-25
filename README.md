@@ -1,8 +1,8 @@
-# Poseidon
+# ourDNA
 
 #### Setup
 ```
-git clone https://github.com/coding-house-apr2015/poseidon my-app
+git clone https://github.com/lifepupil/ourDNA-ang my-app
 cd my-app
 ./setup.sh
 gulp
@@ -32,5 +32,3 @@ NODE_ENV=production gulp aws:publish:full
 
 #### HTML Features
 - Jade
-
-#### Looking for [Apollo](https://github.com/chyld/apollo)?
